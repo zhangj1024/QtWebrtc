@@ -1,0 +1,7 @@
+*.db
+*.vs
+*.svn
+*Debug
+*ipch
+*GeneratedFiles
+*x64
