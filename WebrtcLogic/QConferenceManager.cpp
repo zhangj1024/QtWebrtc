@@ -73,6 +73,7 @@ void QConferenceManager::ConnectToPeer(qint64 peer_id, bool remote)
 	remoteStream = new rtc::RefCountedObject<QtWebrtcRemoteStream>(peer_id);
 	QObject::connect(remoteStream, SIGNAL(LocalIceCandidate(qint64, QString, int, QString)), this, SLOT(onLocalIceCandidate(qint64, QString, int, QString)));
 	QObject::connect(remoteStream, SIGNAL(LocalSDP(qint64, QString, QString)), this, SLOT(onLocalSDP(qint64, QString, QString)));
+	QObject::connect(remoteStream, SIGNAL(IceGatheringComplete(qint64)), this, SLOT(onIceGatheringComplete(qint64)));
 
 	AddStreamInfo(remoteStream);
 
@@ -179,7 +180,7 @@ void QConferenceManager::onStreamStarted(qint64 streamId)
 
 	if (!remoteStreamState.sdp.isEmpty() && !remoteStreamState.sdpType.isEmpty())
 	{
-		_signalling.sendSDP(streamId, remoteStreamState.sdp, remoteStreamState.sdpType);
+		_signalling.SendSDP(streamId, remoteStreamState.sdp, remoteStreamState.sdpType);
 		remoteStreamState.sdp.clear();
 		remoteStreamState.sdpType.clear();
 	}
@@ -202,7 +203,7 @@ void QConferenceManager::onLocalSDP(qint64 id, QString sdp, QString type)
 
 	if (remoteStreamState.canSendSDP)
 	{
-		_signalling.sendSDP(id, sdp, type);
+		_signalling.SendSDP(id, sdp, type);
 	}
 }
 
@@ -212,7 +213,7 @@ void QConferenceManager::sendICEs(qint64 id, QVector<iceCandidate> &iceCandidate
 	{
 		auto candidate = iceCandidateList.front();
 		iceCandidateList.pop_front();
-		_signalling.sendCandidate(id, candidate.sdp_mid, candidate.sdp_mline_index, candidate.sdp);
+		_signalling.SendCandidate(id, candidate.sdp_mid, candidate.sdp_mline_index, candidate.sdp);
 	}
 }
 
@@ -246,7 +247,7 @@ void QConferenceManager::onLocalIceCandidate(qint64 id, QString sdp_mid, int sdp
 
 void QConferenceManager::onIceGatheringComplete(qint64 id)
 {
-#ifdef SIGNALING_LICODE
+#if (defined (SIGNALING_LICODE)) || (defined (SIGNALING_JANUS))
 	onLocalIceCandidate(id, "end", -1, "end");
 #endif
 }

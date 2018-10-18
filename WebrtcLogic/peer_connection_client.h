@@ -45,8 +45,8 @@ public:
 	bool DisconnectPeer(qint64 peer_id);
 
 public slots:
-	void sendSDP(qint64 id, QString sdp, QString type);
-	void sendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate);
+	void SendSDP(qint64 id, QString sdp, QString type);
+	void SendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate);
 
 Q_SIGNALS:
 	void signal_SignedIn();  // Called when we're logged on.
@@ -54,6 +54,8 @@ Q_SIGNALS:
 	void signal_PeerConnected(qint64 id, bool remote);
 	void signal_PeerDisconnected(qint64 id);
 	void signal_ServerConnectionFailure();
+
+	void signal_StreamStarted(qint64 id);
 
 	void retmoeIce(qint64 id, QString sdp_mid, int sdp_mlineindex, QString candidate);
 	void retmoeSDP(qint64 id, QString type, QString sdp);

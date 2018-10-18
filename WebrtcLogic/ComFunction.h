@@ -38,3 +38,4 @@ bool ConvertToJson(const QString &msg, QJsonObject &ret);
 // };
 
 void GetCameraDevices(std::vector<std::string> &device_names);
+QString GetRandomString(int len);

@@ -31,7 +31,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IncludePath>$(WebrtcSrc);$(WebrtcSrc)\third_party\libyuv\include;$(WebrtcSrc)\third_party\jsoncpp\overrides\include;$(WebrtcSrc)\third_party\jsoncpp\source\include;$(WebrtcSrc)\third_party\abseil-cpp;$(IncludePath)</IncludePath>
-    <LibraryPath>$(WebrtcSrc)\out$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(WebrtcSrc)\out\$(Platform)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -56,7 +56,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -69,12 +69,12 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;F:\webrtc\webrtc-2018-8-13\webrtc-checkout\src\out\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;obj/third_party/jsoncpp/jsoncpp/json_reader.obj;obj/third_party/jsoncpp/jsoncpp/json_value.obj;obj/third_party/jsoncpp/jsoncpp/json_writer.obj;obj/rtc_base/rtc_json/json.obj;Qt5Cored.lib;Qt5Networkd.lib;Qt5WebSocketsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
-      <Define>UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;%(PreprocessorDefinitions)</Define>
+      <Define>UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;NOMINMAX;%(PreprocessorDefinitions)</Define>
       <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
@@ -115,6 +115,8 @@
     <ClCompile Include="HttpAPI\NetworkHelper.cpp" />
     <ClCompile Include="HttpAPI\ServerApi.cpp" />
     <ClCompile Include="HttpAPI\ServerHelper.cpp" />
+    <ClCompile Include="JanusSignalling.cpp" />
+    <ClCompile Include="JanusWebsocket.cpp" />
     <ClCompile Include="QtLicodeSignalling.cpp" />
     <ClCompile Include="QtWebrtcRemoteStream.cpp" />
     <ClCompile Include="defaults.cc" />
@@ -165,6 +167,18 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;WEBRTCLOGIC_LIB;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;_WINDLL</Define>
     </QtMoc>
+    <QtMoc Include="JanusWebsocket.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;NOMINMAX;_WINDLL</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;WEBRTCLOGIC_LIB;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;_WINDLL</Define>
+    </QtMoc>
+    <QtMoc Include="JanusSignalling.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;NOMINMAX;_WINDLL</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;WEBRTCLOGIC_LIB;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;_WINDLL</Define>
+    </QtMoc>
     <ClInclude Include="QtWebrtcStream.h">
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;_WINDLL</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
@@ -178,9 +192,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WebrtcLogic.h" />
     <ClInclude Include="webrtclogic_global.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

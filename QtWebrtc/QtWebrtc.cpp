@@ -9,8 +9,15 @@ QtWebrtc::QtWebrtc(QWidget *parent)
 {
 	ui.setupUi(this);
 
+#if 1
 	//for peerconnection_client.exe
-// 	ui.lEIP->setText("127.0.0.1");
+	ui.lEIP->setText("192.168.1.223");
+#else
+	//licode
+	ui.lEIP->setText("https://192.168.1.107:3004");
+#endif
+	//janus
+	ui.lEIP->setText("ws://192.168.1.222:8188");
 
 	logic.Init();
 

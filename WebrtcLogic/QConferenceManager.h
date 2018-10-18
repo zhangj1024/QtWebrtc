@@ -9,8 +9,10 @@
 #include "peer_connection_client.h"
 #include "QtWebrtcRemoteStream.h"
 #include "QtLicodeSignalling.h"
+#include "JanusSignalling.h"
 
-#define SIGNALING_LICODE
+// #define SIGNALING_LICODE
+#define SIGNALING_JANUS
 
 class QConferenceManager : public QObject
 {
@@ -95,6 +97,8 @@ private:
 	QHash<qint64, RemoteStreamInfo> _remoteStreamInfos;
 #ifdef SIGNALING_LICODE
 	QtLicodeSignalling _signalling;
+#elif (defined (SIGNALING_JANUS)) 
+	JanusSignalling _signalling;
 #else
 	PeerConnectionClient _signalling;
 #endif

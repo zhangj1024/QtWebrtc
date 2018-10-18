@@ -641,7 +641,7 @@ void PeerConnectionClient::DisconnectServer() {
 		SignOut();
 }
 
-void PeerConnectionClient::sendSDP(qint64 id, QString sdp, QString type)
+void PeerConnectionClient::SendSDP(qint64 id, QString sdp, QString type)
 {
 	Json::StyledWriter writer;
 	Json::Value jmessage;
@@ -655,7 +655,7 @@ void PeerConnectionClient::sendSDP(qint64 id, QString sdp, QString type)
 	SendMsg(id, msg);
 }
 
-void PeerConnectionClient::sendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate)
+void PeerConnectionClient::SendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate)
 {
 	Json::StyledWriter writer;
 	Json::Value jmessage;

@@ -14,11 +14,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-// #ifdef WIN32
-// #include <winsock2.h>
-// #else
-// #include <unistd.h>
-// #endif
+#ifdef WIN32
+#include <winsock2.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "rtc_base/arraysize.h"
 

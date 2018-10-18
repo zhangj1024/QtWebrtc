@@ -245,7 +245,7 @@ void QtWebrtcRemoteStream::SetPeerSDP(QString type, QString sdp)
 	if (session_description->type() ==
 		webrtc::SessionDescriptionInterface::kOffer)
 	{
-		peer_connection_->CreateAnswer(this, NULL);
+		peer_connection_->CreateAnswer(this, webrtc::PeerConnectionInterface::RTCOfferAnswerOptions());
 	}
 }
 

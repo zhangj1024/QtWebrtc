@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtWebrtc", "QtWebrtc\QtWebr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebrtcLogic", "WebrtcLogic\WebrtcLogic.vcxproj", "{40C24453-D44E-44B3-8363-165AC20B24C4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtClassLibrary1", "QtClassLibrary1\QtClassLibrary1.vcxproj", "{15474D69-12E3-4CE2-AAC7-D3ED500C9A3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -24,6 +26,10 @@ Global
 		{40C24453-D44E-44B3-8363-165AC20B24C4}.Debug|x64.Build.0 = Debug|x64
 		{40C24453-D44E-44B3-8363-165AC20B24C4}.Release|x64.ActiveCfg = Release|x64
 		{40C24453-D44E-44B3-8363-165AC20B24C4}.Release|x64.Build.0 = Release|x64
+		{15474D69-12E3-4CE2-AAC7-D3ED500C9A3C}.Debug|x64.ActiveCfg = Debug|x64
+		{15474D69-12E3-4CE2-AAC7-D3ED500C9A3C}.Debug|x64.Build.0 = Debug|x64
+		{15474D69-12E3-4CE2-AAC7-D3ED500C9A3C}.Release|x64.ActiveCfg = Release|x64
+		{15474D69-12E3-4CE2-AAC7-D3ED500C9A3C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

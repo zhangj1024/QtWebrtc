@@ -146,7 +146,7 @@ void QtLicodeSignalling::onRoomConnectResult(QString msg)
 
 						if (id > 0 && video)
 						{
-							subscribe(id);
+							Subscribe(id);
 						}
 					}
 				}
@@ -198,7 +198,7 @@ void QtLicodeSignalling::onPublishResult(QString msg)
 	}
 }
 
-void QtLicodeSignalling::subscribe(qint64 streamId)
+void QtLicodeSignalling::Subscribe(qint64 streamId)
 {
 // {
 // 	"streamId": 652514446341312000,
@@ -238,7 +238,7 @@ void QtLicodeSignalling::subscribe(qint64 streamId)
 	list.push_back(obj);
 	list.push_back(sdp_);
 
-	_socket.emitMessage("subscribe", list, std::bind(&QtLicodeSignalling::onSubscribe, this, streamId, std::placeholders::_1));
+	_socket.emitMessage("Subscribe", list, std::bind(&QtLicodeSignalling::onSubscribe, this, streamId, std::placeholders::_1));
 }
 
 void QtLicodeSignalling::onSubscribe(qint64 streamId, QString msg)
@@ -283,7 +283,7 @@ void QtLicodeSignalling::onAddStream(QString message)
 	if (streamId != _streamId)
 	{
 		//subscribeToStreams
-		subscribe(streamId);
+		Subscribe(streamId);
 	}
 }
 
@@ -338,7 +338,7 @@ void QtLicodeSignalling::onRemoveStream(QString message)
 	emit signal_PeerDisconnected(streamId);
 }
 
-void QtLicodeSignalling::sendSDP(qint64 id, QString sdp, QString type)
+void QtLicodeSignalling::SendSDP(qint64 id, QString sdp, QString type)
 {
 	QJsonObject obj;
 	obj["streamId"] = id;
@@ -363,7 +363,7 @@ void QtLicodeSignalling::sendSDP(qint64 id, QString sdp, QString type)
 	_socket.emitMessage("signaling_message", list);
 }
 
-void QtLicodeSignalling::sendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate)
+void QtLicodeSignalling::SendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate)
 {
 	QJsonObject obj;
 	obj["streamId"] = id;

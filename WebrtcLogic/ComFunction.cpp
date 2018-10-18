@@ -58,3 +58,16 @@ void GetCameraDevices(std::vector<std::string> &device_names)
 	}
 }
 
+
+QString GetRandomString(int len)
+{
+	static const QString charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	static int strLen = charSet.length();
+
+	QString randomString;
+	for (int i = 0; i < len; i++)
+	{
+		randomString += charSet.at(qrand() % strLen);
+	}
+	return randomString;
+}

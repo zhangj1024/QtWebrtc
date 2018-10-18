@@ -80,6 +80,12 @@
     <ClCompile Include="ConnecttionFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="JanusWebsocket.cpp">
+      <Filter>Signaling</Filter>
+    </ClCompile>
+    <ClCompile Include="JanusSignalling.cpp">
+      <Filter>Signaling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WebrtcLogic.h">
@@ -134,8 +140,11 @@
     <QtMoc Include="QtWebrtcLocalStream.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
+    <QtMoc Include="JanusWebsocket.h">
+      <Filter>Signaling</Filter>
+    </QtMoc>
+    <QtMoc Include="JanusSignalling.h">
+      <Filter>Signaling</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

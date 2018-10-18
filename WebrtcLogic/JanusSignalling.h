@@ -1,12 +1,13 @@
 #pragma once
 #include <QObject>
-#include "SocketIo/QtSocketIoClient.h"
-class QtLicodeSignalling : public QObject
+#include "JanusWebsocket.h"
+
+class JanusSignalling : public QObject
 {
 	Q_OBJECT
 public:
-	QtLicodeSignalling();
-	~QtLicodeSignalling();
+	explicit JanusSignalling(QObject *parent = Q_NULLPTR);
+	virtual ~JanusSignalling();
 
 	void ConnectServer(const std::string& server);
 	void DisconnectServer();
@@ -15,10 +16,11 @@ public:
 public slots:
 	void SendSDP(qint64 id, QString sdp, QString type);
 	void SendCandidate(qint64 id, QString sdpMid, int sdpMLineIndex, QString candidate);
+	void SendCandidateCompleted(qint64 id);
 
 Q_SIGNALS:
 	void signal_SignedIn();  // Called when we're logged on.
- 	void signal_Disconnected();
+	void signal_Disconnected();
 	void signal_PeerConnected(qint64 id, bool remote);
 	void signal_PeerDisconnected(qint64 id);
 	void signal_ServerConnectionFailure();
@@ -34,29 +36,28 @@ private slots:
 	void on_socket_errorReceived(QString reason, QString advice);
 
 private:
-	void connectWebsocket();
-	void on_connectServer_response(int errorCode, QString errorInfo, QByteArray bytes);
+	void CreateSessionId();
+	void OnCreateSessionId(const QJsonObject &recvmsg);
 
-	void onRoomConnectResult(QString msg);
-	void publish();
-	void onPublishResult(QString msg);
+	void AttachVideoRoom();
+	void OnAttachVideoRoom(const QJsonObject &recvmsg);
+
+	void Join(qint64 id);
+	void OnJoin(const QJsonObject &recvmsg, qint64 id);
+	void OnEventJoin(const QJsonObject &recvdata);
+
+	void OnSendSDP(const QJsonObject &recvmsg);
+	void OnEventRemoteSDP(const QJsonObject &recvdata);
+
+	void OnSendCandidate(const QJsonObject &recvmsg);
 	void Subscribe(qint64 streamId);
 	void onSubscribe(qint64 streamId, QString msg);
 
-	//event
-	void onAddStream(QString message);
-	void onSignalingMsgErizo(QString message);
-	void onRemoveStream(QString message);
-
-	bool getEventObj(QString &message, QJsonObject &obj);
 private:
-	QString tokenId;
-	QString host = "192.168.1.164:3001";
-	bool secure;
-	QString signature;
+	JanusWebsocket _socket;
+	QUrl m_requestUrl;
 
-	QtSocketIoClient _socket;
-
-	QString _roomid;
-	qint64 _streamId = 0;
+	qint64 _sessionId;
 };
+
+
