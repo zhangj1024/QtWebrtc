@@ -64,6 +64,7 @@ PeerConnectionClient::PeerConnectionClient()
 }
 
 PeerConnectionClient::~PeerConnectionClient() {
+	DisconnectServer();
 }
 
 void PeerConnectionClient::InitSocketSignals() {
@@ -275,7 +276,7 @@ void PeerConnectionClient::OnMessageFromPeer(qint64 peer_id,
 void PeerConnectionClient::handlePeerMsg(qint64 peer_id, const std::string& message) {
 	RTC_DCHECK(!message.empty());
 
-	RTC_LOG(LS_INFO) << "xxxxxxxxxxxxx" << message;
+// 	RTC_LOG(LS_INFO) << "xxxxxxxxxxxxx" << message;
 
 	Json::Reader reader;
 	Json::Value jmessage;
@@ -296,7 +297,7 @@ void PeerConnectionClient::handlePeerMsg(qint64 peer_id, const std::string& mess
 			return;
 		}
 
-		emit retmoeSDP(peer_id, STD_TO_QT(type), STD_TO_QT(sdp));
+		emit signal_RetmoeSDP(peer_id, STD_TO_QT(type), STD_TO_QT(sdp));
 // 
 // 		webrtc::SdpParseError error;
 // 		webrtc::SessionDescriptionInterface* session_description(
@@ -328,7 +329,7 @@ void PeerConnectionClient::handlePeerMsg(qint64 peer_id, const std::string& mess
 			return;
 		}
 
-		emit retmoeIce(peer_id, STD_TO_QT(sdp_mid), sdp_mlineindex, STD_TO_QT(sdp));
+		emit signal_RetmoeIce(peer_id, STD_TO_QT(sdp_mid), sdp_mlineindex, STD_TO_QT(sdp));
 
 // 		webrtc::SdpParseError error;
 // 		std::unique_ptr<webrtc::IceCandidateInterface> candidate(
@@ -342,7 +343,7 @@ void PeerConnectionClient::handlePeerMsg(qint64 peer_id, const std::string& mess
 // 			RTC_LOG(WARNING) << "Failed to apply the received candidate";
 // 			return;
 // 		}
-		RTC_LOG(INFO) << " Received candidate :" << message;
+// 		RTC_LOG(INFO) << " Received candidate :" << message;
 		return;
 	}
 }
@@ -444,7 +445,7 @@ void PeerConnectionClient::OnRead(rtc::AsyncSocket* socket) {
 							&connected) && id != my_id_) {
 							peers_[id] = name;
 							RTC_LOG(LS_INFO) << "signal_PeerConnected id:" << id << " name:" << name.c_str();
-							emit signal_PeerConnected(id, true);
+// 							emit signal_PeerConnected(id, true);
 						}
 						pos = eol + 1;
 					}
@@ -496,7 +497,7 @@ void PeerConnectionClient::OnHangingGetRead(rtc::AsyncSocket* socket) {
 					if (connected) {
 						peers_[id] = name;
 						RTC_LOG(LS_INFO) << "signal_PeerConnected" << id << name.c_str();
-						emit signal_PeerConnected(id, true);
+						emit signal_PeerConnected(id, true, false);
 					}
 					else {
 						peers_.erase(id);

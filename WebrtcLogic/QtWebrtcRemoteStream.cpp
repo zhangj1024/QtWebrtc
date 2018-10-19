@@ -192,15 +192,18 @@ void QtWebrtcRemoteStream::OnIceCandidate(const webrtc::IceCandidateInterface* c
 	emit LocalIceCandidate(peer_id_, STD_TO_QT(candidate->sdp_mid()), candidate->sdp_mline_index(), STD_TO_QT(sdp));
 }
 
-void QtWebrtcRemoteStream::AddPeerIceCandidate(QString sdp_mid_, int sdp_mlineindex_, QString candidate_)
+bool QtWebrtcRemoteStream::AddPeerIceCandidate(QString sdp_mid_, int sdp_mlineindex_, QString candidate_)
 {
 	RTC_DCHECK(!sdp_mid_.isEmpty());
 	RTC_DCHECK(!candidate_.isEmpty());
 
 	if (!peer_connection_.get())
 	{
-		RTC_LOG(LS_ERROR) << "Failed to initialize our PeerConnection instance";
-		return;
+		if (!InitializePeerConnection())
+		{
+			RTC_LOG(LS_ERROR) << "Failed to initialize our PeerConnection instance";
+			return false;
+		}
 	}
 
 	webrtc::SdpParseError error;
@@ -210,24 +213,27 @@ void QtWebrtcRemoteStream::AddPeerIceCandidate(QString sdp_mid_, int sdp_mlinein
 	{
 		RTC_LOG(WARNING) << "Can't parse received candidate message. "
 			<< "SdpParseError was: " << error.description;
-		return;
+		return false;
 	}
 	if (!peer_connection_->AddIceCandidate(candidate.get()))
 	{
 		RTC_LOG(WARNING) << "Failed to apply the received candidate";
-		return;
+		return false;
 	}
 	// 		RTC_LOG(INFO) << " Received candidate :" << message;
-	return;
+	return true;
 }
 
-void QtWebrtcRemoteStream::SetPeerSDP(QString type, QString sdp)
+bool QtWebrtcRemoteStream::SetPeerSDP(QString type, QString sdp)
 {
 	RTC_DCHECK(!sdp.isEmpty());
 	if (!peer_connection_.get())
 	{
-		RTC_LOG(LS_ERROR) << "Failed to initialize our PeerConnection instance";
-		return;
+		if (!InitializePeerConnection())
+		{
+			RTC_LOG(LS_ERROR) << "Failed to initialize our PeerConnection instance";
+			return false;
+		}
 	}
 
 	webrtc::SdpParseError error;
@@ -237,7 +243,7 @@ void QtWebrtcRemoteStream::SetPeerSDP(QString type, QString sdp)
 	{
 		RTC_LOG(WARNING) << "Can't parse received session description message. "
 			<< "SdpParseError was: " << error.description;
-		return;
+		return false;
 	}
 
 	peer_connection_->SetRemoteDescription(
@@ -247,6 +253,8 @@ void QtWebrtcRemoteStream::SetPeerSDP(QString type, QString sdp)
 	{
 		peer_connection_->CreateAnswer(this, webrtc::PeerConnectionInterface::RTCOfferAnswerOptions());
 	}
+
+	return true;
 }
 
 //

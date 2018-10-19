@@ -33,6 +33,9 @@
     <Filter Include="SocketIO">
       <UniqueIdentifier>{b538d44a-4949-4461-a52d-c03548f166de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Signaling\janus">
+      <UniqueIdentifier>{87fec1a5-f46b-4759-881d-497b3d759e1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WebrtcLogic.cpp">
@@ -81,10 +84,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JanusWebsocket.cpp">
-      <Filter>Signaling</Filter>
+      <Filter>Signaling\janus</Filter>
     </ClCompile>
-    <ClCompile Include="JanusSignalling.cpp">
-      <Filter>Signaling</Filter>
+    <ClCompile Include="JanusVideoRoomManager.cpp">
+      <Filter>Signaling\janus</Filter>
+    </ClCompile>
+    <ClCompile Include="JanusPeerconnection.cpp">
+      <Filter>Signaling\janus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,10 +147,13 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="JanusWebsocket.h">
-      <Filter>Signaling</Filter>
+      <Filter>Signaling\janus</Filter>
     </QtMoc>
-    <QtMoc Include="JanusSignalling.h">
-      <Filter>Signaling</Filter>
+    <QtMoc Include="JanusVideoRoomManager.h">
+      <Filter>Signaling\janus</Filter>
+    </QtMoc>
+    <QtMoc Include="JanusPeerconnection.h">
+      <Filter>Signaling\janus</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

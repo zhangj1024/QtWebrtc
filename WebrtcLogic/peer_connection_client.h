@@ -51,14 +51,14 @@ public slots:
 Q_SIGNALS:
 	void signal_SignedIn();  // Called when we're logged on.
  	void signal_Disconnected();
-	void signal_PeerConnected(qint64 id, bool remote);
+	void signal_PeerConnected(qint64 id, bool show, bool connect);
 	void signal_PeerDisconnected(qint64 id);
 	void signal_ServerConnectionFailure();
 
 	void signal_StreamStarted(qint64 id);
 
-	void retmoeIce(qint64 id, QString sdp_mid, int sdp_mlineindex, QString candidate);
-	void retmoeSDP(qint64 id, QString type, QString sdp);
+	void signal_RetmoeIce(qint64 id, QString sdp_mid, int sdp_mlineindex, QString candidate);
+	void signal_RetmoeSDP(qint64 id, QString type, QString sdp);
 
 protected:
 	bool is_connected() const;

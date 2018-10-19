@@ -22,6 +22,10 @@ JanusWebsocket::JanusWebsocket(QObject *parent) :
 
 JanusWebsocket::~JanusWebsocket()
 {
+	QJsonObject destroyOby;
+	destroyOby["janus"] = "destroy";
+	emitMessage(destroyOby, std::bind(&JanusWebsocket::onPingAck, this));
+
 	this->close();
 	delete m_pPingTimer;
 	delete m_pPingTimeOutTimer;
@@ -143,9 +147,9 @@ void JanusWebsocket::onWsMessage(QString message)
 		__GET_VALUE_FROM_OBJ__(object, "janus", String, janus);
 		__GET_VALUE_FROM_OBJ__(object, "transaction", String, transaction);
 
-		if (transaction.isEmpty())
-// 			&& (janus == "webrtcup"
-// 				|| janus == "media"))
+		if (janus == "webrtcup"
+			|| janus == "media"
+			|| janus == "hangup")
 		{
 			onNotify(janus, object);
 		}
@@ -178,14 +182,13 @@ void JanusWebsocket::onWsMessage(QString message)
 
 void JanusWebsocket::onEvent(const QString &event, const QJsonObject &object)
 {
-	auto itr = m_eventCallbacks.find(event);
-	if (itr != m_eventCallbacks.end())
+	for (auto itr = m_eventCallbacks.begin(); itr != m_eventCallbacks.end(); itr++)
 	{
-		auto callback = itr.value();
-		callback(object);
-		return;
+		if (itr.key() == event)
+		{
+			itr.value()(object);
+		}
 	}
-	qWarning() << "Invalid event received: no name";
 }
 
 void JanusWebsocket::onNotify(const QString &notify, const QJsonObject &object)

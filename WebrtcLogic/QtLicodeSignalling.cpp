@@ -195,7 +195,7 @@ void QtLicodeSignalling::onPublishResult(QString msg)
 	{
 		_streamId = arrs.at(0).toDouble();
 		emit signal_PeerConnected(_streamId, false);
-	}
+	}	
 }
 
 void QtLicodeSignalling::Subscribe(qint64 streamId)
@@ -318,11 +318,11 @@ void QtLicodeSignalling::onSignalingMsgErizo(QString message)
 	{
 		QString sdp;
 		__GET_VALUE_FROM_OBJ__(mess, "sdp", String, sdp);
-		emit retmoeSDP(streamId + peerId, type, sdp);
+		emit signal_RetmoeSDP(streamId + peerId, type, sdp);
 	}
 	else if (type == "candidate")
 	{
-// 			emit retmoeIce();
+// 			emit signal_RetmoeIce();
 	}
 }
 

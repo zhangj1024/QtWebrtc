@@ -115,7 +115,8 @@
     <ClCompile Include="HttpAPI\NetworkHelper.cpp" />
     <ClCompile Include="HttpAPI\ServerApi.cpp" />
     <ClCompile Include="HttpAPI\ServerHelper.cpp" />
-    <ClCompile Include="JanusSignalling.cpp" />
+    <ClCompile Include="JanusPeerconnection.cpp" />
+    <ClCompile Include="JanusVideoRoomManager.cpp" />
     <ClCompile Include="JanusWebsocket.cpp" />
     <ClCompile Include="QtLicodeSignalling.cpp" />
     <ClCompile Include="QtWebrtcRemoteStream.cpp" />
@@ -173,7 +174,13 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;WEBRTCLOGIC_LIB;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;_WINDLL</Define>
     </QtMoc>
-    <QtMoc Include="JanusSignalling.h">
+    <QtMoc Include="JanusVideoRoomManager.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;NOMINMAX;_WINDLL</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;WEBRTCLOGIC_LIB;NOMINMAX;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;_WINDLL</Define>
+    </QtMoc>
+    <QtMoc Include="JanusPeerconnection.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN64;WEBRTCLOGIC_LIB;WIN32;WEBRTC_WIN;QT_CORE_LIB;QT_NETWORK_LIB;QT_WEBSOCKETS_LIB;_MATH_DEFINES_DEFINED;NOMINMAX;_WINDLL</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtWebSockets</IncludePath>

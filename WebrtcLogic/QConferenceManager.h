@@ -9,7 +9,7 @@
 #include "peer_connection_client.h"
 #include "QtWebrtcRemoteStream.h"
 #include "QtLicodeSignalling.h"
-#include "JanusSignalling.h"
+#include "JanusVideoRoomManager.h"
 
 // #define SIGNALING_LICODE
 #define SIGNALING_JANUS
@@ -47,9 +47,12 @@ Q_SIGNALS:
 	void initError(QString error);
 
 public slots :
-	void ConnectToPeer(qint64 peer_id, bool remote);
+	void ConnectToPeer(qint64 peer_id, bool show, bool connect);
 
 private slots:
+#ifdef SIGNALING_JANUS
+	void onLogin();
+#endif
 // 	void onRemoteStreamAdd(qint64 streamId, bool show);
 	void onRemoteStreamRemove(qint64 streamId);
 #ifdef SIGNALING_LICODE
@@ -98,7 +101,7 @@ private:
 #ifdef SIGNALING_LICODE
 	QtLicodeSignalling _signalling;
 #elif (defined (SIGNALING_JANUS)) 
-	JanusSignalling _signalling;
+	JanusVideoRoomManager _signalling;
 #else
 	PeerConnectionClient _signalling;
 #endif

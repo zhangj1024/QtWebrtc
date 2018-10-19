@@ -25,8 +25,8 @@ Q_SIGNALS:
 
 	void signal_StreamStarted(qint64 id);
 
-	void retmoeIce(qint64 id, QString sdp_mid, int sdp_mlineindex, QString candidate);
-	void retmoeSDP(qint64 id, QString type, QString sdp);
+	void signal_RetmoeIce(qint64 id, QString sdp_mid, int sdp_mlineindex, QString candidate);
+	void signal_RetmoeSDP(qint64 id, QString type, QString sdp);
 
 private slots:
 	void on_socket_connected();

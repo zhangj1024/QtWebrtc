@@ -24,7 +24,7 @@ void WebrtcLogic::Logout()
 
 void WebrtcLogic::ConnectToPeer(qint64 peer_id)
 {
-	_QConferenceManager->ConnectToPeer(peer_id, false);
+	_QConferenceManager->ConnectToPeer(peer_id, true, true);
 }
 
 void WebrtcLogic::DisConnectToPeer()

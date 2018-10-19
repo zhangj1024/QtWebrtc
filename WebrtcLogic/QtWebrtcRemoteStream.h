@@ -48,8 +48,8 @@ public:
 
 public slots:
 	void ConnectToPeer();
-	void AddPeerIceCandidate(QString sdp_mid, int sdp_mlineindex, QString candidate);
-	void SetPeerSDP(QString type, QString sdp);
+	bool AddPeerIceCandidate(QString sdp_mid, int sdp_mlineindex, QString candidate);
+	bool SetPeerSDP(QString type, QString sdp);
 	void DeletePeerConnection();
 	void OnVideoTrackChanged();
 	void EnableSend(bool enable);

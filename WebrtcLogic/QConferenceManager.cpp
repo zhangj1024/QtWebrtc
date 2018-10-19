@@ -13,14 +13,18 @@ QConferenceManager::QConferenceManager(QObject *parent)
 	rtc::ThreadManager::Instance()->SetCurrentThread(w32_thread);
 	rtc::InitializeSSL();
 
+#ifdef SIGNALING_JANUS
+	QObject::connect(&_signalling, SIGNAL(signal_Login()), this, SLOT(onLogin()));
+#endif
+	
 #ifdef SIGNALING_LICODE
 	QObject::connect(&_signalling, SIGNAL(signal_StreamStarted(qint64)), this, SLOT(onStreamStarted(qint64)));
 #endif
-	QObject::connect(&_signalling, SIGNAL(signal_PeerConnected(qint64, bool)), this, SLOT(ConnectToPeer(qint64, bool)));
+	QObject::connect(&_signalling, SIGNAL(signal_PeerConnected(qint64, bool, bool)), this, SLOT(ConnectToPeer(qint64, bool, bool)));
 	QObject::connect(&_signalling, SIGNAL(signal_PeerDisconnected(qint64)), this, SLOT(onRemoteStreamRemove(qint64)));
 
-	QObject::connect(&_signalling, SIGNAL(retmoeIce(qint64, QString, int, QString)), this, SLOT(onRetmoeIce(qint64, QString, int, QString)));
-	QObject::connect(&_signalling, SIGNAL(retmoeSDP(qint64, QString, QString)), this, SLOT(onRetmoeSDP(qint64, QString, QString)));
+	QObject::connect(&_signalling, SIGNAL(signal_RetmoeIce(qint64, QString, int, QString)), this, SLOT(onRetmoeIce(qint64, QString, int, QString)));
+	QObject::connect(&_signalling, SIGNAL(signal_RetmoeSDP(qint64, QString, QString)), this, SLOT(onRetmoeSDP(qint64, QString, QString)));
 }
 
 QConferenceManager::~QConferenceManager()
@@ -31,9 +35,15 @@ QConferenceManager::~QConferenceManager()
 	rtc::CleanupSSL();
 }
 
+#ifdef SIGNALING_JANUS
+void QConferenceManager::onLogin()
+{
+	_signalling.Join();
+}
+#endif
+
 bool QConferenceManager::Init()
 {
-
 	return true;
 }
 
@@ -63,7 +73,7 @@ void QConferenceManager::Logout()
 	_signalling.DisconnectServer();
 }
 
-void QConferenceManager::ConnectToPeer(qint64 peer_id, bool remote)
+void QConferenceManager::ConnectToPeer(qint64 peer_id, bool show, bool connect)
 {
 	_WebrtcLocalStream->Init();
 	StartLocalPreview();
@@ -77,7 +87,7 @@ void QConferenceManager::ConnectToPeer(qint64 peer_id, bool remote)
 
 	AddStreamInfo(remoteStream);
 
-	if (remote)
+	if (show)
 	{
 		for (auto &hwnd : _remoteHwnds)
 		{
@@ -91,7 +101,10 @@ void QConferenceManager::ConnectToPeer(qint64 peer_id, bool remote)
 		}
 	}
 
-	remoteStream->ConnectToPeer();
+	if (connect)
+	{
+		remoteStream->ConnectToPeer();
+	}
 #ifdef SIGNALING_LICODE
 	remoteStream->EnableSend(!remote);
 #endif
@@ -257,7 +270,7 @@ void QConferenceManager::onRetmoeIce(qint64 id, QString sdp_mid, int sdp_mlinein
 	auto itr = _remoteStreamInfos.find(id);
 	if (itr == _remoteStreamInfos.end())
 	{
-#if 0
+#if 1
 		ConnectToPeer(id, true, false);
 		itr = _remoteStreamInfos.find(id);
 		if (itr == _remoteStreamInfos.end())
@@ -277,7 +290,7 @@ void QConferenceManager::onRetmoeSDP(qint64 id, QString type, QString sdp)
 	auto itr = _remoteStreamInfos.find(id);
 	if (itr == _remoteStreamInfos.end())
 	{
-#if 0
+#if 1
 		ConnectToPeer(id, true, false);
 		itr = _remoteStreamInfos.find(id);
 		if (itr == _remoteStreamInfos.end())
